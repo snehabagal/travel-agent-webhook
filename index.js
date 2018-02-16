@@ -22,7 +22,7 @@ app.post('/webhook', function (req, res) {
   console.log(req.body)
   console.log("-----------------------------------------")
    
-   var apiAIReq = JSON.parse(req.body);
+   //var apiAIReq = JSON.parse(req.body);
    
   // we have a simple authentication
  /* if (REQUIRE_AUTH) {
@@ -39,23 +39,28 @@ app.post('/webhook', function (req, res) {
   // the value of Action from api.ai is stored in req.body.result.action
   //console.log('Authentication Successful...')
 
-  console.log("apiAIReq=>"+apiAIReq)
   
-  if(!apiAIReq.result.parameters)  {
-    console.log("parameters is null")
+  if(!req.body.result)  {
+    console.log("result is null")
   }else{
-    console.log("parameters=>"+apiAIReq.result.parameters)
+    console.log("result=>"+req.body.result)
   }
   
-  /*if(!req.body.result.parameters.given-name)  {
+  if(!req.body.result.parameters)  {
+    console.log("parameters is null")
+  }else{
+    console.log("parameters=>"+req.body.result.parameters)
+  }
+  
+  if(!req.body.result.parameters['given-name'])  {
     console.log("parameters.given-name is null")
   }else{
-    console.log("given-name=>"+req.body.result.parameters.given-name)
-  }*/
+    console.log("given-name=>"+req.body.result.parameters['given-name'])
+  }
   // parameters are stored in req.body.result.parameters
-  var intentName = apiAIReq.metadata && apiAIReq.metadata.intentName ? apiAIReq.metadata.intentName : 'DefaultIntent';
+  var intentName = req.body.result.metadata && req.body.result.metadata['intentName'] ? req.body.result.metadata['intentName'] : 'DefaultIntent';
   console.log('intentName=>'+intentName)
-  var userName = req.body.result && req.body.result.parameters && req.body.result.parameters.given-name ? req.body.result.parameters.given-name : 'Guest';
+  var userName = req.body.result && req.body.result.parameters && req.body.result.parameters['given-name'] ? req.body.result.parameters['given-name'] : 'Guest';
   
   var webhookReply = 'Hello ' + userName + '! Welcome from the webhook.'
 
