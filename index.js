@@ -47,11 +47,6 @@ app.post('/webhook', function (req, res) {
     console.log("parameters=>"+req.body.result.parameters)
   }
   
-   if(!req.body.result.parameters)  {
-    console.log("parameters is null")
-  }else{
-    console.log("parameters=>"+req.body.result.parameters)
-  }
   if(!req.body.result.parameters.given-name)  {
     console.log("parameters.given-name is null")
   }else{
