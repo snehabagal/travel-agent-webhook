@@ -35,8 +35,8 @@ app.post('/webhook', function (req, res) {
   console.log('Authentication Successful...')
 
   // parameters are stored in req.body.result.parameters
-  let userName = req.body.result && req.body.result.parameters && req.body.result.parameters.movie ? req.body.result.parameters.username : 'Guest';
-  var userName = 'Sneha'
+  var userName = req.body.result && req.body.result.parameters && req.body.result.parameters.username ? req.body.result.parameters.username : 'Guest';
+  
   var webhookReply = 'Hello ' + userName + '! Welcome from the webhook.'
 
   // the most basic response
