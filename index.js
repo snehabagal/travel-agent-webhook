@@ -20,11 +20,11 @@ app.post('/webhook', function (req, res) {
   console.log(req.body)
 
   // we have a simple authentication
-  if (REQUIRE_AUTH) {
+ /* if (REQUIRE_AUTH) {
     if (req.headers['auth-token'] !== AUTH_TOKEN) {
       return res.status(401).send('Unauthorized')
     }
-  }
+  }*/
 
   // and some validation too
 /*if (!req.body || !req.body.result || !req.body.result.parameters) {
@@ -32,7 +32,7 @@ app.post('/webhook', function (req, res) {
   }*/
 
   // the value of Action from api.ai is stored in req.body.result.action
-  console.log('Authentication Successful...')
+  //console.log('Authentication Successful...')
 
   // parameters are stored in req.body.result.parameters
   var userName = req.body.result && req.body.result.parameters && req.body.result.parameters.username ? req.body.result.parameters.username : 'Guest';
