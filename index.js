@@ -2,7 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
 app.use(bodyParser.json())
-app.set('port', (process.env.PORT || 5000))
+app.set('port', (process.env.PORT || 5001))
 
 const REQUIRE_AUTH = true
 const AUTH_TOKEN = 'an-example-token'
@@ -27,15 +27,16 @@ app.post('/webhook', function (req, res) {
   }
 
   // and some validation too
-  if (!req.body || !req.body.result || !req.body.result.parameters) {
+/*if (!req.body || !req.body.result || !req.body.result.parameters) {
     return res.status(400).send('Bad Request')
-  }
+  }*/
 
   // the value of Action from api.ai is stored in req.body.result.action
   console.log('* Received action -- %s', req.body.result.action)
 
   // parameters are stored in req.body.result.parameters
-  var userName = req.body.result.parameters['given-name']
+  //var userName = req.body.result.parameters['given-name']
+  var userName = 'Sneha'
   var webhookReply = 'Hello ' + userName + '! Welcome from the webhook.'
 
   // the most basic response
