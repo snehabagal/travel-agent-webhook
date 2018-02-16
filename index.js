@@ -20,8 +20,8 @@ app.post('/webhook', function (req, res) {
   console.log("Request body is as below")
   // the payload is stored on req.body
   console.log(req.body)
-  console.log("Request is as below")
-   console.log(req.body.id)
+  console.log("-----------------------------------------")
+   
   // we have a simple authentication
  /* if (REQUIRE_AUTH) {
     if (req.headers['auth-token'] !== AUTH_TOKEN) {
@@ -36,9 +36,29 @@ app.post('/webhook', function (req, res) {
 
   // the value of Action from api.ai is stored in req.body.result.action
   //console.log('Authentication Successful...')
-
+  if(!req.body.result){
+    console.log("result is null")
+  }else{
+    console.log("result=>"+req.body.result)
+  }
+  if(!req.body.result.parameters)  {
+    console.log("parameters is null")
+  }else{
+    console.log("parameters=>"+req.body.result.parameters)
+  }
+  
+   if(!req.body.result.parameters)  {
+    console.log("parameters is null")
+  }else{
+    console.log("parameters=>"+req.body.result.parameters)
+  }
+  if(!req.body.result.parameters.given-name)  {
+    console.log("parameters.given-name is null")
+  }else{
+    console.log("given-name=>"+req.body.result.parameters.given-name)
+  }
   // parameters are stored in req.body.result.parameters
-  var userName = req.body.result && req.body.result.parameters && req.body.result.parameters.username ? req.body.result.parameters.username : 'Guest';
+  var userName = req.body.result && req.body.result.parameters && req.body.result.parameters.given-name ? req.body.result.parameters.given-name : 'Guest';
   
   var webhookReply = 'Hello ' + userName + '! Welcome from the webhook.'
 
