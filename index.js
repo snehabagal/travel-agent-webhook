@@ -38,26 +38,52 @@ if (!req.body || !req.body.result || !req.body.result.parameters) {
 
   // the value of Action from api.ai is stored in req.body.result.action
   //console.log('Authentication Successful...')
-
-  
-  var webhookReply = '';
-  var missingParams='';
-  if(req.body.result.parameters)  {
-    
-  }else{
-    
-  }
-  
-  if(!req.body.result.parameters['given-name'])  {
-    console.log("parameters.given-name is null")
-  }else{
-    console.log("given-name=>"+req.body.result.parameters['given-name'])
-  }
   // parameters are stored in req.body.result.parameters
   var intentName = req.body.result.metadata && req.body.result.metadata['intentName'] ? req.body.result.metadata['intentName'] : 'DefaultIntent';
   console.log('intentName=>'+intentName)
-  var userName = req.body.result && req.body.result.parameters && req.body.result.parameters['given-name'] ? req.body.result.parameters['given-name'] : 'Guest';
   
+  var webhookReply = '';
+  if(intentName==''){
+  var missingParams='';
+  var toCity='';
+  var fromCity='';
+  var travelDate='';
+  var travelTime='';
+  if(req.body.result.parameters)  {
+    if(req.body.result.parameters['Tocity'])  {
+      toCity=req.body.result.parameters['Tocity'];
+    }else{
+      missingParams = 'Tocity ,';
+    }
+    if(req.body.result.parameters['Fromcity'])  {
+      fromCity=req.body.result.parameters['Fromcity'];
+    }else{
+      missingParams = 'Fromcity ,';
+    }
+    if(req.body.result.parameters['date'])  {
+      travelDate=req.body.result.parameters['date'];
+    }else{
+      missingParams = 'date ,';
+    }
+    if(req.body.result.parameters['time'])  {
+      travelTime=req.body.result.parameters['time'];
+    }else{
+      missingParams = 'time ,';
+    }
+  }else{
+    webhookReply ="Insufficient information, won't be able to proceed with booking!!"
+  }
+  
+  if(missingParams=='')  {
+    webhookReply ="Your booking is confirmed from "+fromCity+" to "+toCity+" on "+travelDate+" at "+travelTime+" . How would you like to pay by card or card?";
+  }else{
+    webhookReply ="Insufficient information. Following inputs are missing "+missingParams;
+  }
+  }else if(intentName ==''){
+  }else {
+    webhookReply ="Something went wrong not matching intent found.";
+  }
+ 
  
 
   // the most basic response
