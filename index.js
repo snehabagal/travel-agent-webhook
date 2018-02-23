@@ -80,6 +80,13 @@ if (!req.body || !req.body.result || !req.body.result.parameters) {
     webhookReply ="Insufficient information. Following inputs are missing "+missingParams;
   }
   }else if(intentName =='1 - paymentPrompted'){
+    var paymentMode='';
+    if(req.body.result.parameters['paymentMethods'])  {
+      paymentMode=req.body.result.parameters['paymentMethods'];
+      webhookReply ="Okay, I've received your payment through "+paymentMode+", enjoy your flight.";
+    }else{
+      webhookReply ="I didn't get the payment mode.";
+    }
   }else {
     webhookReply ="Something went wrong not matching intent found.";
   }
