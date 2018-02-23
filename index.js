@@ -43,7 +43,7 @@ if (!req.body || !req.body.result || !req.body.result.parameters) {
   console.log('intentName=>'+intentName)
   
   var webhookReply = '';
-  if(intentName==''){
+  if(intentName=='0 - getTravelDetails'){
   var missingParams='';
   var toCity='';
   var fromCity='';
@@ -79,7 +79,7 @@ if (!req.body || !req.body.result || !req.body.result.parameters) {
   }else{
     webhookReply ="Insufficient information. Following inputs are missing "+missingParams;
   }
-  }else if(intentName ==''){
+  }else if(intentName =='1 - paymentPrompted'){
   }else {
     webhookReply ="Something went wrong not matching intent found.";
   }
