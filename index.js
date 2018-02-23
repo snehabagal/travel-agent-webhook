@@ -75,7 +75,7 @@ if (!req.body || !req.body.result || !req.body.result.parameters) {
   }
   
   if(missingParams=='')  {
-    webhookReply ="Your booking is confirmed from "+fromCity+" to "+toCity+" on "+travelDate+" at "+travelTime+" . How would you like to pay by card or card?";
+    webhookReply ="Your booking is confirmed from "+fromCity+" to "+toCity+" on "+travelDate+" at "+travelTime+" . How would you like to pay by card or cash?";
   }else{
     webhookReply ="Insufficient information. Following inputs are missing "+missingParams;
   }
