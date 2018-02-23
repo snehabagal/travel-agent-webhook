@@ -32,24 +32,20 @@ app.post('/webhook', function (req, res) {
   }*/
 
   // and some validation too
-/*if (!req.body || !req.body.result || !req.body.result.parameters) {
+if (!req.body || !req.body.result || !req.body.result.parameters) {
     return res.status(400).send('Bad Request')
-  }*/
+  }
 
   // the value of Action from api.ai is stored in req.body.result.action
   //console.log('Authentication Successful...')
 
   
-  if(!req.body.result)  {
-    console.log("result is null")
+  var webhookReply = '';
+  var missingParams='';
+  if(req.body.result.parameters)  {
+    
   }else{
-    console.log("result=>"+req.body.result)
-  }
-  
-  if(!req.body.result.parameters)  {
-    console.log("parameters is null")
-  }else{
-    console.log("parameters=>"+req.body.result.parameters)
+    
   }
   
   if(!req.body.result.parameters['given-name'])  {
@@ -62,7 +58,7 @@ app.post('/webhook', function (req, res) {
   console.log('intentName=>'+intentName)
   var userName = req.body.result && req.body.result.parameters && req.body.result.parameters['given-name'] ? req.body.result.parameters['given-name'] : 'Guest';
   
-  var webhookReply = 'Hello ' + userName + '! Welcome from the webhook.'
+ 
 
   // the most basic response
   res.status(200).json({
