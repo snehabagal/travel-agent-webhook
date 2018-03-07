@@ -32,17 +32,20 @@ app.post('/webhook', function (req, res) {
   }*/
 
   // and some validation too
-if (!req.body || !req.body.result || !req.body.result.parameters) {
+if ((!req.body || !req.body.result || !req.body.result.parameters)||(!req.body || !req.body.request || !req.body.request.intent)) {
     return res.status(400).send('Bad Request')
   }
+  
 
   // the value of Action from api.ai is stored in req.body.result.action
   //console.log('Authentication Successful...')
   // parameters are stored in req.body.result.parameters
-  var intentName = req.body.result.metadata && req.body.result.metadata['intentName'] ? req.body.result.metadata['intentName'] : 'DefaultIntent';
-  console.log('intentName=>'+intentName)
-  
   var webhookReply = '';
+  if(req.body && req.body.result && req.body.result.parameters)
+  {
+  var intentName = req.body.result.metadata && req.body.result.metadata['intentName'] ? req.body.result.metadata['intentName'] : 'DefaultIntent';
+  console.log('intentName=>'+intentName);
+  
   if(intentName=='0 - getTravelDetails'){
   var missingParams='';
   var toCity='';
@@ -90,8 +93,7 @@ if (!req.body || !req.body.result || !req.body.result.parameters) {
   }else {
     webhookReply ="Something went wrong not matching intent found.";
   }
- 
- 
+  }
 
   // the most basic response
   res.status(200).json({
