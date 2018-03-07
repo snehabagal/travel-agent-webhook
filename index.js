@@ -96,6 +96,10 @@ app.post('/webhook', function (req, res) {
   }else {
     webhookReply ="Something went wrong not matching intent found.";
   }
+  }else if(req.body&&req.body.request&&req.body.request.intent){
+    var intentName = req.body.request.intent['name'];
+    console.log('Alexa intent name'+intentName);
+  
   }else{
     return res.status(400).send('Bad Request');
   }
