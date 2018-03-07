@@ -32,9 +32,9 @@ app.post('/webhook', function (req, res) {
   }*/
 
   // and some validation too
-if ((!req.body || !req.body.result || !req.body.result.parameters)||(!req.body || !req.body.request || !req.body.request.intent)) {
+/*if ((!req.body || !req.body.result || !req.body.result.parameters)||(!req.body || !req.body.request || !req.body.request.intent)) {
     return res.status(400).send('Bad Request')
-  }
+  }*/
   
 
   // the value of Action from api.ai is stored in req.body.result.action
@@ -96,6 +96,8 @@ if ((!req.body || !req.body.result || !req.body.result.parameters)||(!req.body |
   }else {
     webhookReply ="Something went wrong not matching intent found.";
   }
+  }else{
+    return res.status(400).send('Bad Request');
   }
 
   // the most basic response
