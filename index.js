@@ -38,7 +38,10 @@ if ((!req.body || !req.body.result || !req.body.result.parameters)||(!req.body |
   
 
   // the value of Action from api.ai is stored in req.body.result.action
-  //console.log('Authentication Successful...')
+  console.log('Authentication Successful...');
+  var isApiAI = req.body && req.body.result && req.body.result.parameters;
+  
+  console.log('isApiAI=>'+isApiAI);
   // parameters are stored in req.body.result.parameters
   var webhookReply = '';
   if(req.body && req.body.result && req.body.result.parameters)
