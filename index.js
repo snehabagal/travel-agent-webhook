@@ -97,10 +97,66 @@ app.post('/webhook', function (req, res) {
     webhookReply ="Something went wrong not matching intent found.";
   }
   }else if(req.body&&req.body.request&&req.body.request.intent){
-    var intentName = req.body.request.intent['name'];
-    console.log('Alexa intent name'+intentName);
-  
-  }else{
+        var intentName=req.body.request.intent.name;
+        console.log("intentName=>"+intentName);
+        if(intentName=="TravelIntent"){
+          if(req.body.request.intent.slots)
+          {
+              let travelDate="";
+              let fromCity="";
+              let toCity="";
+              let missingSlots="";
+              if(req.body.request.intent.slots.travelDate)
+              {
+                  travelDate=req.body.request.intent.slots.travelDate.value;
+              }else{
+                  missingSlots="travelDate,"
+              }
+              if(req.body.request.intent.slots.fromCity)
+              {
+                  fromCity=req.body.request.intent.slots.fromCity.value;
+              }else{
+                  missingSlots+="fromCity,"
+              }
+              if(req.body.request.intent.slots.toCity)
+              {
+                  toCity=req.body.request.intent.slots.toCity.value;
+              }else{
+                  missingSlots+="toCity,"
+              }
+              if(missingSlots==""){
+                  webhookReply ="Your booking is confirmed from "+fromCity+" to "+toCity+" on "+travelDate+". How would you like to pay by card or cash?";
+              }else{
+                  webhookReply="Insufficient information. Following information is missing:"+missingSlots;
+              }
+              console.log("travelDate=>"+travelDate);
+              console.log("fromCity=>"+fromCity);
+              console.log("toCity=>"+toCity);
+          }else{
+              webhookReply="Insufficient information. Required slots information is missing.";
+          }
+      }else if(intentName=="PaymentIntent"){
+		if(req.body.request.intent.slots)
+          {
+              let paymentMode="";
+			  let missingSlots="";
+              if(req.body.request.intent.slots.paymentMode)
+              {
+                  paymentMode=req.body.request.intent.slots.paymentMode.value;
+              }else{
+                  missingSlots="paymentMode";
+              }
+              
+              if(missingSlots==""){
+                  webhookReply ="Okay, I've received your payment through "+paymentMode+", enjoy your flight.";
+              }else{
+                  webhookReply="Insufficient information. Following information is missing:"+missingSlots;
+              }             
+          }else{
+              webhookReply="Insufficient information. Required slots information is missing.";
+          }
+	  }	  
+    }else{
     return res.status(400).send('Bad Request');
   }
 
