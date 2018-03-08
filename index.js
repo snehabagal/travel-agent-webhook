@@ -97,6 +97,8 @@ app.post('/webhook', function (req, res) {
     webhookReply ="Something went wrong not matching intent found.";
   }
   }else if(req.body&&req.body.request&&req.body.request.intent){
+	  let options={};
+	  options.endSession = true;
         var intentName=req.body.request.intent.name;
         console.log("intentName=>"+intentName);
         if(intentName=="TravelIntent"){
@@ -126,6 +128,7 @@ app.post('/webhook', function (req, res) {
               }
               if(missingSlots==""){
                   webhookReply ="Your booking is confirmed from "+fromCity+" to "+toCity+" on "+travelDate+". How would you like to pay by card or cash?";
+		      options.endSession = false;
               }else{
                   webhookReply="Insufficient information. Following information is missing:"+missingSlots;
               }
@@ -155,7 +158,9 @@ app.post('/webhook', function (req, res) {
           }else{
               webhookReply="Insufficient information. Required slots information is missing.";
           }
-	  }	  
+	  }
+	  options.speechText = webhookReply;
+	  return buildResponse(options);
     }else{
     return res.status(400).send('Bad Request');
   }
@@ -171,3 +176,32 @@ app.post('/webhook', function (req, res) {
 app.listen(app.get('port'), function () {
   console.log('* Webhook service is listening on port:' + app.get('port'))
 })
+
+function buildResponse(options) {
+
+  var response = {
+    version: "1.0",
+    response: {
+      outputSpeech: {
+        type: "SSML",
+        ssml: "<speak>"+options.speechText+"</speak>"
+      },
+      shouldEndSession: options.endSession
+    }
+  };
+
+  if(options.repromptText) {
+    response.response.reprompt = {
+      outputSpeech: {
+        type: "SSML",
+        ssml: "<speak>"+options.repromptText+"</speak>"
+      }
+    };
+  }
+
+  if(options.session && options.session.attributes) {
+    response.sessionAttributes = options.session.attributes;
+  }
+
+  return response;
+}
