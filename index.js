@@ -158,9 +158,11 @@ app.post('/webhook', function (req, res) {
           }else{
               webhookReply="Insufficient information. Required slots information is missing.";
           }
+	  }else{
+		  webhookReply="Unknown intent.";
 	  }
 	  options.speechText = webhookReply;
-	  return buildResponse(options);
+	  return buildResponse(options,res);
     }else{
     return res.status(400).send('Bad Request');
   }
@@ -177,31 +179,31 @@ app.listen(app.get('port'), function () {
   console.log('* Webhook service is listening on port:' + app.get('port'))
 })
 
-function buildResponse(options) {
-
-  var response = {
-    version: "1.0",
-    response: {
-      outputSpeech: {
-        type: "SSML",
-        ssml: "<speak>"+options.speechText+"</speak>"
-      },
-      shouldEndSession: options.endSession
-    }
-  };
-
-  if(options.repromptText) {
-    response.response.reprompt = {
-      outputSpeech: {
-        type: "SSML",
-        ssml: "<speak>"+options.repromptText+"</speak>"
+function buildResponse(options,res) {
+    console.log("In build res");
+    res.json( {
+      version: "1.0",
+      response: {
+        outputSpeech: {
+          type: "SSML",
+          ssml: "<speak>"+options.speechText+"</speak>"
+        },
+        shouldEndSession: options.endSession
       }
-    };
+    });
+  
+    if(options.repromptText) {
+        res.response.reprompt = {
+        outputSpeech: {
+          type: "SSML",
+          ssml: "<speak>"+options.repromptText+"</speak>"
+        }
+      };
+    }
+  
+    if(options.session && options.session.attributes) {
+        res.sessionAttributes = options.session.attributes;
+    }
+    //console.log("Response:\n"+JSON.stringify(res,null,2));
+    return res;
   }
-
-  if(options.session && options.session.attributes) {
-    response.sessionAttributes = options.session.attributes;
-  }
-
-  return response;
-}
